@@ -1,13 +1,14 @@
 package world.rule.action.condition;
 
 import org.w3c.dom.Element;
+import world.ParseException;
 import world.entity.IEntity;
 
 import java.util.List;
 
 public class ConditionParser {
 
-    public static Condition parse(Element conditionElement, List<IEntity> entities) {
+    public static Condition parse(Element conditionElement, List<IEntity> entities) throws ParseException {
         String singularity = conditionElement.getAttribute("singularity");
         if (singularity.equals("single")) {
             return SingleCondition.parse(conditionElement, entities);
