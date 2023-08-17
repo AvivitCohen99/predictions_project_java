@@ -12,6 +12,8 @@ public class ActionParser {
                 String entityName = actionElement.getAttribute("entity");
                 return new KillAction(entityName);
             case "condition": return ConditionAction.parse(actionElement);
+            case "calculation": return CalculateAction.parse(actionElement);
+            case "set": return SetAction.parse(actionElement);
         }
         throw new RuntimeException("Unknown action");
     }

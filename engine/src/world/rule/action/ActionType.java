@@ -1,5 +1,5 @@
 package world.rule.action;
 
 public enum ActionType {
-    INCREASE, DECREASE, KILL, CONDITION
+    INCREASE, DECREASE, KILL, CONDITION, SET, CALCULATE
 }

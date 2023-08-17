@@ -7,10 +7,12 @@ public class PropertyParser {
         String type = propertyElement.getAttribute("type");
         String name = propertyElement.getElementsByTagName("PRD-name").item(0).getTextContent();
 
-        if (type.equals("decimal")) {
-            return IntegerProperty.parse(propertyElement, name);
+        switch(type){
+            case "decimal": return IntegerProperty.parse(propertyElement, name);
+            case "float": return FloatProperty.parse(propertyElement, name);
+            case "string": return StringProperty.parse(propertyElement, name);
+            case "boolean": return BooleanProperty.parse(propertyElement, name);
         }
-
-        throw new RuntimeException("need to implement!"); // TODO: need to implement boolean, string and float
+        throw new RuntimeException("unknown property type!");
     }
 }
