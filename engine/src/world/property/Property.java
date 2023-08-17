@@ -6,4 +6,5 @@ public interface Property<T> {
     T generateValue();
     void setValue(T value);
     T getValue();
+    PropertyDetails getDetails();
 }

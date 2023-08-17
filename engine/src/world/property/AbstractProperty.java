@@ -5,7 +5,7 @@ import world.property.generator.api.ValueGenerator;
 public abstract class AbstractProperty<T> implements Property<T>{
     String name;
     PropertyType type;
-    ValueGenerator valueGenerator;
+    ValueGenerator<T> valueGenerator;
     T value;
 
     public AbstractProperty(String name, PropertyType type, ValueGenerator valueGenerator){
@@ -26,7 +26,7 @@ public abstract class AbstractProperty<T> implements Property<T>{
 
     @Override
     public T generateValue() {
-        return null;
+        return valueGenerator.generateValue();
     }
 
     @Override
@@ -37,5 +37,10 @@ public abstract class AbstractProperty<T> implements Property<T>{
     @Override
     public T getValue() {
         return value;
+    }
+
+    @Override
+    public PropertyDetails getDetails() {
+        return new PropertyDetails(name, type, null, null, true); // TODO: fix is random
     }
 }

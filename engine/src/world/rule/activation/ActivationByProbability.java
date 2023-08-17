@@ -1,4 +1,4 @@
-package world.rule;
+package world.rule.activation;
 
 import java.util.Random;
 

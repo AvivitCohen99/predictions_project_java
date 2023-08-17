@@ -2,8 +2,13 @@ package world.rule;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import world.ParseException;
+import world.entity.IEntity;
 import world.rule.action.Action;
 import world.rule.action.ActionParser;
+import world.rule.activation.Activation;
+import world.rule.activation.ActivationByProbability;
+import world.rule.activation.ActivationByTicks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +19,7 @@ public class Rule implements IRule {
     private Activation activation;
     private final List<Action> actions;
 
-    public static IRule ruleParser(Element ruleElement){
+    public static IRule parse(Element ruleElement, List<IEntity> entities) throws ParseException {
         String ruleName = ruleElement.getAttribute("name");
         Activation activation;
         Element activationElement = (Element) ruleElement.getElementsByTagName("PRD-activation").item(0);
@@ -35,7 +40,7 @@ public class Rule implements IRule {
         NodeList actionsList = ruleElement.getElementsByTagName("PRD-action");
         for (int j = 0; j < actionsList.getLength(); j++) {
             Element actionElement = (Element) actionsList.item(j);
-            rule.addAction(ActionParser.parse(actionElement));
+            rule.addAction(ActionParser.parse(actionElement, entities));
         }
         return rule;
     }

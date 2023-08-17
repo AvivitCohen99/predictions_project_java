@@ -9,4 +9,5 @@ public interface IEntity {
     int getPopulation();
     List<Property> getProps();
     void addEntityProperty(Property propertyDefinition);
+    EntityDetails getDetails();
 }

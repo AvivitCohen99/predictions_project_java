@@ -19,4 +19,6 @@ public class World {
         this.entities = entities;
         this.termination = termination;
     }
+
+    //getWorldDetails();
 }

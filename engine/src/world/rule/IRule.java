@@ -1,6 +1,7 @@
 package world.rule;
 
 import world.rule.action.Action;
+import world.rule.activation.Activation;
 
 import java.util.List;
 

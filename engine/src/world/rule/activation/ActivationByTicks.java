@@ -1,4 +1,4 @@
-package world.rule;
+package world.rule.activation;
 
 public class ActivationByTicks implements Activation{
     private int ticksCycle;
