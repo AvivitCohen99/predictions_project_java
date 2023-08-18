@@ -15,7 +15,7 @@ public class FloatProperty extends AbstractProperty<Double> {
 
         ValueGenerator generator;
 
-        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize")); // TODO: if no value ask the user
+        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize"));
         if (!isRandom) {
             Double init = Double.parseDouble(propValueElement.getAttribute("init"));
             generator = new FixedValueGenerator(init);

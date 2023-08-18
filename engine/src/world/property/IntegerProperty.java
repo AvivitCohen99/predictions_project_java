@@ -13,7 +13,7 @@ public class IntegerProperty extends AbstractProperty<Integer> {
 
         ValueGenerator generator;
 
-        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize")); // TODO: if no value ask the user
+        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize"));
         if (!isRandom) {
             Integer init = Integer.parseInt(propValueElement.getAttribute("init"));
             generator = new FixedValueGenerator(init);

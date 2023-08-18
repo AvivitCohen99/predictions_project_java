@@ -13,7 +13,7 @@ public class StringProperty extends AbstractProperty<String>{
     public static StringProperty parse(Element propertyElement, String name) {
         Element propValueElement = (Element) propertyElement.getElementsByTagName("PRD-value").item(0);
         ValueGenerator generator;
-        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize")); // TODO: if no value ask the user
+        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize"));
         if (!isRandom) {
             String init = propValueElement.getAttribute("init");
             generator = new FixedValueGenerator(init);
