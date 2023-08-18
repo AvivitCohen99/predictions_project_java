@@ -2,6 +2,7 @@ package world.rule.action;
 
 import org.w3c.dom.Element;
 import world.ParseException;
+import world.World;
 import world.entity.IEntity;
 import world.rule.action.condition.Condition;
 import world.rule.action.condition.ConditionParser;
@@ -42,5 +43,15 @@ public class ConditionAction extends AbstractAction {
         this.condition = condition;
         this.thenAction = thenAction;
         this.elseAction = elseAction;
+    }
+
+    @Override
+    public void invokeAction(World world) throws Exception {
+        if(this.condition.isFulfilled()){
+            this.thenAction.invokeAction(world);
+        }
+        else if(this.elseAction != null){
+            this.elseAction.invokeAction(world);
+        }
     }
 }

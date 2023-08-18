@@ -10,6 +10,7 @@ import world.property.PropertyParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Entity implements IEntity {
@@ -59,6 +60,16 @@ public class Entity implements IEntity {
     @Override
     public List<Property> getProps() {
         return properties;
+    }
+
+    @Override
+    public Optional<Property> getProp(String propName) {
+        return this.properties.stream().filter(prop -> prop.getName().equals(propName)).findFirst();
+    }
+
+    @Override
+    public void setPopulation(int population) {
+        this.population = population;
     }
 
     @Override

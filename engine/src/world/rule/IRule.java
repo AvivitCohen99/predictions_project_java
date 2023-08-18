@@ -1,5 +1,6 @@
 package world.rule;
 
+import world.World;
 import world.rule.action.Action;
 import world.rule.activation.IActivation;
 
@@ -11,4 +12,5 @@ public interface IRule {
     List<Action> getActionsToPerform(int ticks);
     void addAction(Action action);
     RuleDetails getDetails();
+    void invokeRule(World world) throws Exception;
 }

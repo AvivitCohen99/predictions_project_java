@@ -10,7 +10,7 @@ public class BooleanProperty extends AbstractProperty<Boolean> {
     public static BooleanProperty parse(Element booleanPropertyElement, String name) {
         Element propValueElement = (Element) booleanPropertyElement.getElementsByTagName("PRD-value").item(0);
         ValueGenerator generator;
-        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize")); // TODO: if no value ask the user
+        Boolean isRandom = propValueElement == null || Boolean.parseBoolean(propValueElement.getAttribute("random-initialize"));
         if (!isRandom) {
             Boolean init = Boolean.parseBoolean(propValueElement.getAttribute("init"));
             generator = new FixedValueGenerator(init);

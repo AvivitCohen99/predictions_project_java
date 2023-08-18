@@ -5,6 +5,7 @@ import world.World;
 import world.WorldDetails;
 import world.WorldParser;
 import world.ParseException;
+import world.rule.IRule;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -25,7 +26,18 @@ public class Simulation {
         return world.getDetails();
     }
 
-    public void run() {
 
+    public void run() throws Exception {
+        int terminationTicks = world.getDetails().terminationDetails.ticks;
+        int tick = 1;
+        while (tick <= terminationTicks) {
+            for (IRule rule: world.getRules()){
+                if(rule.getActivation().isActive(tick)){
+                    rule.invokeRule(world);
+                }
+            }
+            tick++;
+        }
+        System.out.println("done");
     }
 }

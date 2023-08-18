@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class SimulationRunner {
 
@@ -24,7 +25,7 @@ public class SimulationRunner {
         this.scanner = new Scanner(System.in);
     }
 
-    public void run(){
+    public void run() throws Exception {
         getFileFromUser();
         printSimulationDetails();
         startSimulation();
@@ -35,46 +36,72 @@ public class SimulationRunner {
         return type.convert(value);
     }
 
-    private void startSimulation() {
+    private void getEnvVariableFromUser() {
         List <Property> environmentProps = simulation.getWorld().getEnv().getAllProperties();
         for(Property property: environmentProps) {
-            PropertyDetails details = property.getDetails();
-            System.out.println("env property: " + details.name);
-            String enteredValue = "";
-            if(details.from.isPresent() && details.to.isPresent()) {
-                Number value = null;
-                while (value == null) {
-                    System.out.println("enter " + details.type + " value between " + details.from.get() + " - " + details.to.get());
-                    try {
-                        enteredValue = scanner.nextLine();
-                        value = property.getType().convert(enteredValue);
-                        if (value.doubleValue() > details.to.get().doubleValue() || value.doubleValue() < details.from.get().doubleValue()) {
-                            System.out.println("number not in range");
+            System.out.println("Do you want to enter value to " + property.getName() + " or use default value? enter 'yes' on 'no'");
+            String answer = scanner.nextLine();
+            if (answer.equals("yes")) {
+                PropertyDetails details = property.getDetails();
+                System.out.println("env property: " + details.name);
+                String enteredValue = "";
+                if(details.from.isPresent() && details.to.isPresent()) {
+                    Number value = null;
+                    while (value == null) {
+                        System.out.println("enter " + details.type + " value between " + details.from.get() + " - " + details.to.get());
+                        try {
+                            enteredValue = scanner.nextLine();
+                            value = property.getType().convert(enteredValue);
+                            if (value.doubleValue() > details.to.get().doubleValue() || value.doubleValue() < details.from.get().doubleValue()) {
+                                System.out.println("number not in range");
+                                value = null;
+                            }
+                        } catch (Exception e) {
+                            System.out.println("unable to convert value " + enteredValue + " to type " + details.type);
                             value = null;
                         }
-                    } catch (Exception e) {
-                        System.out.println("unable to convert value " + enteredValue + " to type " + details.type);
-                        value = null;
                     }
+                    property.setValue(value);
                 }
-                property.setValue(value);
+                else {
+                    Object value = null;
+                    while (value == null){
+                        try {
+                            System.out.println("enter " + details.type + " value");
+                            enteredValue = scanner.nextLine();
+                            value = property.getType().convert(enteredValue);
+                        } catch (Exception e){
+                            System.out.println("unable to convert value " + value + " to type " + details.type);
+                            value = null;
+                        }
+                    }
+                    property.setValue(value);
+                    value = null;
+                }
+            } else if (answer.equals("no")) {
+                property.setValue(property.generateValue());
             }
             else {
-                Object value = null;
-                while (value == null){
-                    try {
-                        System.out.println("enter " + details.type + " value");
-                        enteredValue = scanner.nextLine();
-                        value = property.getType().convert(enteredValue);
-                    } catch (Exception e){
-                        System.out.println("unable to convert value " + value + " to type " + details.type);
-                        value = null;
-                    }
-                }
-                property.setValue(value);
-                value = null;
+                System.out.println("Please enter 'yes' to enter a value or 'no' to use default value");
             }
         }
+    }
+
+    private void printEnvVariables() {
+        List <Property> environmentProps = simulation.getWorld().getEnv().getAllProperties();
+        for(Property property: environmentProps) {
+            System.out.println(property.getName() + ": " + property.getValue());
+        }
+    }
+
+
+
+    private void startSimulation() throws Exception {
+        String simulationId = UUID.randomUUID().toString();
+        getEnvVariableFromUser();
+        printEnvVariables();
+        simulation.run(); //TODO: returns result
+        System.out.println("Simulation " + simulationId + " ended");
 
     }
 

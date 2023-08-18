@@ -2,14 +2,18 @@ package world.rule.action;
 
 import org.w3c.dom.Element;
 import world.ParseException;
+import world.World;
 import world.entity.IEntity;
+import world.expression.Expression;
+import world.property.Property;
+import world.property.PropertyType;
 
 import java.util.List;
 
 public class DecreaseAction extends AbstractAction {
 
     private final String property;
-    private final String byExpression;
+    private final Expression byExpression;
 
     public static DecreaseAction parse(Element actionElement, List<IEntity> entities) throws ParseException {
         if (AbstractAction.isValidAction(actionElement, entities)) {
@@ -26,6 +30,15 @@ public class DecreaseAction extends AbstractAction {
     public DecreaseAction(String entityToEffect, String property, String byExpression) {
         super(ActionType.DECREASE, entityToEffect);
         this.property = property;
-        this.byExpression = byExpression;
+        this.byExpression = new Expression(byExpression, entityToEffect);
+    }
+
+    @Override
+    public void invokeAction(World world) throws Exception {
+        IEntity entityToEffect = this.getEntityToEffect(world);
+        Property prop = this.getPropertyToEffect(entityToEffect, this.property);
+        Integer currentValue = PropertyType.DECIMAL.convert(prop.getValue());
+        Integer decreaseBy = PropertyType.DECIMAL.convert(byExpression.getValue(world));
+        prop.setValue(currentValue - decreaseBy);
     }
 }

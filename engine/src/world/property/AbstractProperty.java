@@ -40,7 +40,10 @@ public abstract class AbstractProperty<T> implements Property<T> {
 
     @Override
     public T getValue() {
-        return value;
+        if (value != null) {
+            return value;
+        }
+        return generateValue();
     }
 
     @Override

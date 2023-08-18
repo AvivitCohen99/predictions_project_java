@@ -2,14 +2,18 @@ package world.rule.action;
 
 import org.w3c.dom.Element;
 import world.ParseException;
+import world.World;
 import world.entity.IEntity;
+import world.expression.Expression;
+import world.property.Property;
+import world.property.PropertyType;
 
 import java.util.List;
 
 public class SetAction extends AbstractAction {
 
     String propertyName;
-    String value;
+    Expression expression;
 
     public static SetAction parse(Element actionElement, List<IEntity> entities) throws ParseException {
         if (AbstractAction.isValidAction(actionElement, entities)) {
@@ -26,6 +30,14 @@ public class SetAction extends AbstractAction {
     public SetAction(String entityToEffect, String propertyName, String value) {
         super(ActionType.SET, entityToEffect);
         this.propertyName = propertyName;
-        this.value = value;
+        this.expression = new Expression(value, entityToEffect);
+    }
+
+    @Override
+    public void invokeAction(World world) throws Exception {
+        IEntity entityToEffect = this.getEntityToEffect(world);
+        Property prop = this.getPropertyToEffect(entityToEffect, this.propertyName);
+        Object currentValue = prop.getType().convert(expression.getValue(world));
+        prop.setValue(currentValue);
     }
 }

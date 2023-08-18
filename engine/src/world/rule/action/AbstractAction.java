@@ -1,7 +1,9 @@
 package world.rule.action;
 
 import org.w3c.dom.Element;
+import world.World;
 import world.entity.IEntity;
+import world.property.Property;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,24 @@ public abstract class AbstractAction implements Action{
             }
         }
         return false;
+    }
+
+    protected IEntity getEntityToEffect(World world) throws Exception {
+        Optional<IEntity> entityToEffect = world.getEntities().stream().filter(entity -> entity.getName().equals(this.getEntityToEffect())).findFirst();
+        if(entityToEffect.isPresent()){
+            return entityToEffect.get();
+        }
+
+        throw new Exception("");
+    }
+
+    protected Property getPropertyToEffect(IEntity entity, String propertyName) throws Exception {
+        Optional<Property> prop = entity.getProps().stream().filter(property-> property.getName().equals(propertyName)).findFirst();
+        if(prop.isPresent()){
+            return prop.get();
+        }
+
+        throw new Exception("");
     }
 
 

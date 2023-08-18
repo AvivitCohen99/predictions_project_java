@@ -34,4 +34,16 @@ public class World {
         TerminationDetails terminationDetails = termination.getDetails();
         return new WorldDetails(entityDetailsList, ruleDetailsList, terminationDetails);
     }
+
+    public List<IEntity> getEntities() {
+        return entities;
+    }
+
+    public List<IRule> getRules() {
+        return rules;
+    }
+
+    public Termination getTermination() {
+        return termination;
+    }
 }

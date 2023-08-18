@@ -2,7 +2,10 @@ package world.rule.action;
 
 import org.w3c.dom.Element;
 import world.ParseException;
+import world.World;
 import world.entity.IEntity;
+import world.expression.Expression;
+import world.property.Property;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,11 +35,11 @@ public class CalculateAction extends AbstractAction {
             CalculationAction calculationAction;
             Element multiplyElement = (Element) actionElement.getElementsByTagName("PRD-multiply");
             if (multiplyElement != null) {
-                calculationAction = CalculateAction.CalculationActionParse("multiply", multiplyElement);
+                calculationAction = CalculateAction.CalculationActionParse("multiply", multiplyElement, entityToEffect);
             } else {
                 Element divideElement = (Element) actionElement.getElementsByTagName("PRD-divide");
                 if (divideElement != null) {
-                    calculationAction = CalculateAction.CalculationActionParse("divide", multiplyElement);
+                    calculationAction = CalculateAction.CalculationActionParse("divide", multiplyElement, entityToEffect);
                 } else {
                     throw new RuntimeException("calculation without action");
                 }
@@ -49,10 +52,10 @@ public class CalculateAction extends AbstractAction {
         }
     }
 
-    private static CalculationAction CalculationActionParse(String type, Element actionElement){
+    private static CalculationAction CalculationActionParse(String type, Element actionElement, String entity){
         String arg1 = actionElement.getAttribute("arg1");
         String arg2 = actionElement.getAttribute("arg2");
-        return new CalculationAction(type, arg1, arg2);
+        return new CalculationAction(type, arg1, arg2, entity);
     }
 
     public CalculateAction(String entityToEffect, String resultProperty, CalculationAction calculationAction) {
@@ -61,15 +64,36 @@ public class CalculateAction extends AbstractAction {
         this.calculationAction = calculationAction;
     }
 
+    @Override
+    public void invokeAction(World world) throws Exception {
+        IEntity entityToEffect = this.getEntityToEffect(world);
+        Property resultProp = this.getPropertyToEffect(entityToEffect, this.resultProperty);
+        Object calculationResult = calculationAction.calculate(world, entityToEffect);
+        resultProp.setValue(calculationResult);
+    }
+
     private static class CalculationAction {
         String type;
-        String arg1;
-        String arg2;
+        Expression arg1;
+        Expression arg2;
 
-        public CalculationAction(String type, String arg1, String arg2){
+        public CalculationAction(String type, String arg1, String arg2, String entity){
             this.type = type;
-            this.arg1 = arg1;
-            this.arg2 = arg2;
+            this.arg1 = new Expression(arg1, entity);
+            this.arg2 = new Expression(arg2, entity);
+        }
+
+        public Number calculate(World world, IEntity entity) throws Exception {
+            Number a = this.arg1.getNumericValue(world, entity);
+            Number b = this.arg2.getNumericValue(world, entity);
+            if(type.equals("multiply")){
+                return a.doubleValue() * b.doubleValue();
+            }
+            else if(type.equals("divide") && b.doubleValue() > 0){
+                return a.doubleValue() / b.doubleValue();
+            }
+
+            throw new Exception("invalid numbers");
         }
     }
 }

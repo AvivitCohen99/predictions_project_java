@@ -4,6 +4,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import world.ParseException;
+import world.World;
 import world.entity.IEntity;
 import world.rule.action.Action;
 import world.rule.action.ActionParser;
@@ -93,6 +94,13 @@ public class Rule implements IRule {
     @Override
     public RuleDetails getDetails() {
         return new RuleDetails(this.name, this.activation.getDetails(), this.actions.size());
+    }
+
+    @Override
+    public void invokeRule(World world) throws Exception {
+        for(Action action: actions){
+            action.invokeAction(world);
+        }
     }
 }
 

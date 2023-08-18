@@ -3,6 +3,7 @@ package world.rule.action.condition;
 import org.w3c.dom.Element;
 import world.ParseException;
 import world.entity.IEntity;
+import world.expression.Expression;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class SingleCondition extends Condition {
         String entityToEffect;
         String propertyName;
         String operator;
-        String value;
+        Expression value;
 
         public static SingleCondition parse(Element conditionElement, List<IEntity> entities) throws ParseException {
                 if (Condition.isValidCondition(conditionElement, entities)) {
@@ -28,7 +29,7 @@ public class SingleCondition extends Condition {
                 this.entityToEffect = entityToEffect;
                 this.propertyName = propertyName;
                 this.operator = operator;
-                this.value = value;
+                this.value = new Expression(value, entityToEffect);
         }
 
 
