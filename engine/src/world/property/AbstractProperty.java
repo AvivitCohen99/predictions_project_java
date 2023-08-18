@@ -6,7 +6,7 @@ import world.property.generator.random.impl.numeric.NumericRange;
 
 import java.util.Optional;
 
-public abstract class AbstractProperty<T> implements Property<T> {
+public abstract class AbstractProperty<T> implements PropertyDefinition<T> {
     String name;
     PropertyType type;
     ValueGenerator<T> valueGenerator;

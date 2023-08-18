@@ -3,6 +3,7 @@ package world.rule.action.condition;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import world.ParseException;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class MultipleCondition extends Condition {
     String logical;
     List<Condition> innerConditions;
 
-    public static MultipleCondition parse(Element conditionElement, List<IEntity> entities) throws ParseException {
+    public static MultipleCondition parse(Element conditionElement, List<EntityDefinition> entities) throws ParseException {
         List<Condition> innerConditions = new ArrayList();
         String logical = conditionElement.getAttribute("logical");
         NodeList innerConditionsList = conditionElement.getElementsByTagName("PRD-condition");

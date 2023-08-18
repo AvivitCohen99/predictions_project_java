@@ -2,8 +2,9 @@ package world.rule.action;
 
 import org.w3c.dom.Element;
 import world.World;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
-import world.property.Property;
+import world.property.PropertyDefinition;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,12 +19,12 @@ public abstract class AbstractAction implements Action{
         this.entityName = entityName;
     }
 
-    protected static boolean isValidAction(Element actionElement, List<IEntity> entities) {
+    protected static boolean isValidAction(Element actionElement, List<EntityDefinition> entities) {
         String entityToEffect = actionElement.getAttribute("entity");
-        Optional<IEntity> entity = entities.stream().filter(innerEntity -> innerEntity.getName().equals(entityToEffect)).findFirst();
+        Optional<EntityDefinition> entity = entities.stream().filter(innerEntity -> innerEntity.name.equals(entityToEffect)).findFirst();
         if (entity.isPresent()) {
             String propertyToEffect = actionElement.getAttribute("property");
-            boolean propertyExists = entity.get().getProps().stream().anyMatch(innerProperty -> innerProperty.getName().equals(propertyToEffect));
+            boolean propertyExists = entity.get().properties.stream().anyMatch(innerProperty -> innerProperty.getName().equals(propertyToEffect));
             if (propertyExists) {
                 return true;
             }
@@ -40,8 +41,8 @@ public abstract class AbstractAction implements Action{
         throw new Exception("");
     }
 
-    protected Property getPropertyToEffect(IEntity entity, String propertyName) throws Exception {
-        Optional<Property> prop = entity.getProps().stream().filter(property-> property.getName().equals(propertyName)).findFirst();
+    protected PropertyDefinition getPropertyToEffect(IEntity entity, String propertyName) throws Exception {
+        Optional<PropertyDefinition> prop = entity.getProps().stream().filter(property-> property.getName().equals(propertyName)).findFirst();
         if(prop.isPresent()){
             return prop.get();
         }

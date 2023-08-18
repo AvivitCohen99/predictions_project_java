@@ -1,11 +1,11 @@
 package world.environment;
 
-import world.property.Property;
+import world.property.PropertyDefinition;
 
 import java.util.List;
 
 public interface IEnvironment {
-    Property getEnvironmentVariable(String name);
-    void addEnvironmentVariable(Property property);
-    List<Property> getAllProperties();
+    PropertyDefinition getEnvironmentVariable(String name);
+    void addEnvironmentVariable(PropertyDefinition property);
+    List<PropertyDefinition> getAllProperties();
 }

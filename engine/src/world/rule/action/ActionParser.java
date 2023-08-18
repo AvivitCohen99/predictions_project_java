@@ -2,12 +2,13 @@ package world.rule.action;
 
 import org.w3c.dom.Element;
 import world.ParseException;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 
 import java.util.List;
 
 public class ActionParser {
-    public static Action parse(Element actionElement, List<IEntity> entities) throws ParseException {
+    public static Action parse(Element actionElement, List<EntityDefinition> entities) throws ParseException {
         String actionType = actionElement.getAttribute("type");
         switch (actionType) {
             case "increase":
@@ -16,7 +17,7 @@ public class ActionParser {
                 return DecreaseAction.parse(actionElement, entities);
             case "kill":
                 String entityName = actionElement.getAttribute("entity");
-                boolean exists = entities.stream().anyMatch(entity -> entity.getName().equals(entityName));
+                boolean exists = entities.stream().anyMatch(entity -> entity.name.equals(entityName));
                 if (exists) {
                     return new KillAction(entityName);
                 } else {

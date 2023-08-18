@@ -1,6 +1,6 @@
 package world.property;
 
-public interface Property<T> {
+public interface PropertyDefinition<T> {
     String getName();
     PropertyType getType();
     T generateValue();

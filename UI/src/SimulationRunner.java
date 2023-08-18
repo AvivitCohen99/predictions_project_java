@@ -1,8 +1,9 @@
 import simulation.Simulation;
 import world.ParseException;
-import world.WorldDetails;
+import world.WorldDefinition;
+import world.entity.EntityDefinition;
 import world.entity.EntityDetails;
-import world.property.Property;
+import world.property.PropertyDefinition;
 import world.property.PropertyDetails;
 import world.property.PropertyType;
 import world.rule.RuleDetails;
@@ -37,8 +38,8 @@ public class SimulationRunner {
     }
 
     private void getEnvVariableFromUser() {
-        List <Property> environmentProps = simulation.getWorld().getEnv().getAllProperties();
-        for(Property property: environmentProps) {
+        List <PropertyDefinition> environmentProps = simulation.getWorld().getEnv().getAllProperties();
+        for(PropertyDefinition property: environmentProps) {
             System.out.println("Do you want to enter value to " + property.getName() + " or use default value? enter 'yes' on 'no'");
             String answer = scanner.nextLine();
             if (answer.equals("yes")) {
@@ -88,8 +89,8 @@ public class SimulationRunner {
     }
 
     private void printEnvVariables() {
-        List <Property> environmentProps = simulation.getWorld().getEnv().getAllProperties();
-        for(Property property: environmentProps) {
+        List <PropertyDefinition> environmentProps = simulation.getWorld().getEnv().getAllProperties();
+        for(PropertyDefinition property: environmentProps) {
             System.out.println(property.getName() + ": " + property.getValue());
         }
     }
@@ -138,26 +139,27 @@ public class SimulationRunner {
     }
 
     private void printSimulationDetails() {
-        WorldDetails worldDetails = simulation.getWorldDetails();
+        WorldDefinition worldDefinition = simulation.getWorldDetails();
 
-        List<EntityDetails> entityDetailsList = worldDetails.entityDetails;
-        List<RuleDetails> ruleDetailsList = worldDetails.rulesDetails;
-        TerminationDetails terminationDetails = worldDetails.terminationDetails;
+        List<EntityDefinition> entityDefinitions = worldDefinition.entityDefinitions;
+        List<RuleDetails> ruleDetailsList = worldDefinition.rulesDetails;
+        TerminationDetails terminationDetails = worldDefinition.terminationDetails;
 
         System.out.println("Entities details:");
-        for (EntityDetails entityDetails: entityDetailsList) {
-            List<PropertyDetails> propertyDetailsList = entityDetails.propertiesDetails;
-            System.out.println("Entity name: " + entityDetails.name);
-            System.out.println("Population: " + entityDetails.population);
+        for (EntityDefinition Definition: entityDefinitions) {
+            List<PropertyDefinition> propertyDefinitionList = Definition.properties;
+            System.out.println("Entity name: " + Definition.name);
+            System.out.println("Population: " + Definition.populationCount);
             System.out.println("The properties:");
-            for (PropertyDetails propertyDetails : propertyDetailsList){
-                System.out.println("Property name: " + propertyDetails.name);
-                System.out.println("Property type: " + propertyDetails.type);
-                if (propertyDetails.from != null && propertyDetails.from.isPresent() && propertyDetails.to != null &&propertyDetails.to.isPresent()) {
-                    System.out.println("Range from: " + propertyDetails.from);
-                    System.out.println("Range to: " + propertyDetails.to);
+            for (PropertyDefinition propertyDefinition : propertyDefinitionList){
+                PropertyDetails details = propertyDefinition.getDetails();
+                System.out.println("Property name: " + details.name);
+                System.out.println("Property type: " + details.type);
+                if (details.from != null && details.from.isPresent() && details.to != null && details.to.isPresent()) {
+                    System.out.println("Range from: " + details.from);
+                    System.out.println("Range to: " + details.to);
                 }
-                System.out.println("Property is initialized randomly: " + propertyDetails.isRandom);
+                System.out.println("Property is initialized randomly: " + details.isRandom);
                 System.out.println("\n");
             }
         }

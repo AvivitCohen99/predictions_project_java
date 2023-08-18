@@ -1,18 +1,15 @@
 package world.entity;
 
-import world.property.Property;
+import world.property.PropertyDefinition;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IEntity {
     String getName();
-    int getPopulation();
-    List<Property> getProps();
-    Optional<Property> getProp(String propName);
+    List<PropertyDefinition> getProps();
+    Optional<PropertyDefinition> getProp(String propName);
 
-    void setPopulation(int population);
-
-    void addEntityProperty(Property propertyDefinition);
+    void addEntityProperty(PropertyDefinition propertyDefinition);
     EntityDetails getDetails();
 }

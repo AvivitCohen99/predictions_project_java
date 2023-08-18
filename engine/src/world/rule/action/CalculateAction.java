@@ -3,9 +3,10 @@ package world.rule.action;
 import org.w3c.dom.Element;
 import world.ParseException;
 import world.World;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.expression.Expression;
-import world.property.Property;
+import world.property.PropertyDefinition;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,12 +16,12 @@ public class CalculateAction extends AbstractAction {
     private String resultProperty;
     private CalculationAction calculationAction;
 
-    protected static boolean isValidAction(Element actionElement, List<IEntity> entities) {
+    protected static boolean isValidAction(Element actionElement, List<EntityDefinition> entities) {
         String entityToEffect = actionElement.getAttribute("entity");
-        Optional<IEntity> entity = entities.stream().filter(innerEntity -> innerEntity.getName().equals(entityToEffect)).findFirst();
+        Optional<EntityDefinition> entity = entities.stream().filter(innerEntity -> innerEntity.name.equals(entityToEffect)).findFirst();
         if (entity.isPresent()) {
             String propertyToEffect = actionElement.getAttribute("result-prop");
-            boolean propertyExists = entity.get().getProps().stream().anyMatch(innerProperty -> innerProperty.getName().equals(propertyToEffect));
+            boolean propertyExists = entity.get().properties.stream().anyMatch(innerProperty -> innerProperty.getName().equals(propertyToEffect));
             if (propertyExists) {
                 return true;
             }
@@ -28,7 +29,7 @@ public class CalculateAction extends AbstractAction {
         return false;
     }
 
-    public static CalculateAction parse(Element actionElement, List<IEntity> entities) throws ParseException{
+    public static CalculateAction parse(Element actionElement, List<EntityDefinition> entities) throws ParseException{
         if (CalculateAction.isValidAction(actionElement, entities)) {
             String entityToEffect = actionElement.getAttribute("entity");
             String resultProperty = actionElement.getAttribute("result-prop");
@@ -67,7 +68,7 @@ public class CalculateAction extends AbstractAction {
     @Override
     public void invokeAction(World world) throws Exception {
         IEntity entityToEffect = this.getEntityToEffect(world);
-        Property resultProp = this.getPropertyToEffect(entityToEffect, this.resultProperty);
+        PropertyDefinition resultProp = this.getPropertyToEffect(entityToEffect, this.resultProperty);
         Object calculationResult = calculationAction.calculate(world, entityToEffect);
         resultProp.setValue(calculationResult);
     }

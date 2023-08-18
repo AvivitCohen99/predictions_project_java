@@ -3,10 +3,10 @@ package world.rule.action;
 import org.w3c.dom.Element;
 import world.ParseException;
 import world.World;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.expression.Expression;
-import world.property.Property;
-import world.property.PropertyType;
+import world.property.PropertyDefinition;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class SetAction extends AbstractAction {
     String propertyName;
     Expression expression;
 
-    public static SetAction parse(Element actionElement, List<IEntity> entities) throws ParseException {
+    public static SetAction parse(Element actionElement, List<EntityDefinition> entities) throws ParseException {
         if (AbstractAction.isValidAction(actionElement, entities)) {
             String entityToEffect = actionElement.getAttribute("entity");
             String propertyToEffect = actionElement.getAttribute("property");
@@ -36,7 +36,7 @@ public class SetAction extends AbstractAction {
     @Override
     public void invokeAction(World world) throws Exception {
         IEntity entityToEffect = this.getEntityToEffect(world);
-        Property prop = this.getPropertyToEffect(entityToEffect, this.propertyName);
+        PropertyDefinition prop = this.getPropertyToEffect(entityToEffect, this.propertyName);
         Object currentValue = prop.getType().convert(expression.getValue(world));
         prop.setValue(currentValue);
     }

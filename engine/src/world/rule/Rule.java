@@ -1,10 +1,10 @@
 package world.rule;
 
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import world.ParseException;
 import world.World;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.rule.action.Action;
 import world.rule.action.ActionParser;
@@ -13,7 +13,6 @@ import world.rule.activation.IActivation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Rule implements IRule {
 
@@ -21,7 +20,7 @@ public class Rule implements IRule {
     private IActivation activation;
     private final List<Action> actions;
 
-    public static IRule parse(Element ruleElement, List<IEntity> entities) throws ParseException {
+    public static IRule parse(Element ruleElement, List<EntityDefinition> entities) throws ParseException {
         String ruleName = ruleElement.getAttribute("name");
         IActivation activation;
         Element activationElement = (Element) ruleElement.getElementsByTagName("PRD-activation").item(0);

@@ -2,6 +2,7 @@ package world.rule.action.condition;
 
 import org.w3c.dom.Element;
 import world.ParseException;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.expression.Expression;
 
@@ -14,7 +15,7 @@ public class SingleCondition extends Condition {
         String operator;
         Expression value;
 
-        public static SingleCondition parse(Element conditionElement, List<IEntity> entities) throws ParseException {
+        public static SingleCondition parse(Element conditionElement, List<EntityDefinition> entities) throws ParseException {
                 if (Condition.isValidCondition(conditionElement, entities)) {
                         String entityToEffect = conditionElement.getAttribute("entity");
                         String propertyName = conditionElement.getAttribute("property");

@@ -2,7 +2,7 @@ package simulation;
 
 import org.xml.sax.SAXException;
 import world.World;
-import world.WorldDetails;
+import world.WorldDefinition;
 import world.WorldParser;
 import world.ParseException;
 import world.rule.IRule;
@@ -22,7 +22,7 @@ public class Simulation {
         this.world = WorldParser.parse(xmlFile);
     }
 
-    public WorldDetails getWorldDetails() {
+    public WorldDefinition getWorldDetails() {
         return world.getDetails();
     }
 

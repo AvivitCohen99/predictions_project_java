@@ -4,7 +4,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import world.ParseException;
-import world.property.Property;
+import world.property.PropertyDefinition;
 import world.property.PropertyParser;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Environment implements IEnvironment{
-    private final Map<String, Property> propNameToProp;
+    private final Map<String, PropertyDefinition> propNameToProp;
 
     public static Environment environmentParser(Element environmentElement) throws ParseException {
         Environment env = new Environment();
@@ -22,7 +22,7 @@ public class Environment implements IEnvironment{
             Node envPropertyNode = envPropertyList.item(i);
             if (envPropertyNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element envPropertyElement = (Element) envPropertyNode;
-                Property envProperty = PropertyParser.parse(envPropertyElement);
+                PropertyDefinition envProperty = PropertyParser.parse(envPropertyElement);
                 if(env.getEnvironmentVariable(envProperty.getName()) != null){
                     throw new ParseException("environment exception - property already exists.");
                 }
@@ -36,18 +36,18 @@ public class Environment implements IEnvironment{
         this.propNameToProp = new HashMap<>();
     }
 
-    public Property getEnvironmentVariable(String name){
+    public PropertyDefinition getEnvironmentVariable(String name){
         return propNameToProp.get(name);
     }
 
-    public List<Property> getAllProperties() {
-        List<Property> propertyList = new ArrayList<>(propNameToProp.values());
+    public List<PropertyDefinition> getAllProperties() {
+        List<PropertyDefinition> propertyList = new ArrayList<>(propNameToProp.values());
         return propertyList;
     }
 
 //    public void updateProperty();
 
-    public void addEnvironmentVariable(Property property){
+    public void addEnvironmentVariable(PropertyDefinition property){
         propNameToProp.put(property.getName(), property);
     }
 }

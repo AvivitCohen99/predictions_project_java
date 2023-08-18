@@ -1,9 +1,8 @@
 package world.expression;
 
 import world.World;
-import world.entity.Entity;
 import world.entity.IEntity;
-import world.property.Property;
+import world.property.PropertyDefinition;
 import world.property.PropertyType;
 
 import java.util.Optional;
@@ -35,7 +34,7 @@ public class Expression {
             return this.value;
         }
         if(function.equals("environment")){
-            Property envProp = world.getEnv().getEnvironmentVariable(arg);
+            PropertyDefinition envProp = world.getEnv().getEnvironmentVariable(arg);
             if(envProp != null) {
                 return envProp.getValue();
             }
@@ -54,7 +53,7 @@ public class Expression {
                 Number value = PropertyType.FLOAT.convert(this.value);
                 return value;
             } catch (Exception e) {
-                Optional<Property> prop = entity.getProp((String) this.value);
+                Optional<PropertyDefinition> prop = entity.getProp((String) this.value);
                 if (prop.isPresent()) {
                     return PropertyType.DECIMAL.convert(prop.get().getValue());
                 }

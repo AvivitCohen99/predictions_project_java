@@ -3,6 +3,7 @@ package world.rule.action;
 import org.w3c.dom.Element;
 import world.ParseException;
 import world.World;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.rule.action.condition.Condition;
 import world.rule.action.condition.ConditionParser;
@@ -15,13 +16,13 @@ public class ConditionAction extends AbstractAction {
     Action thenAction;
     Action elseAction;
 
-    protected static boolean isValidConditionAction(Element actionElement, List<IEntity> entities) {
+    protected static boolean isValidConditionAction(Element actionElement, List<EntityDefinition> entities) {
         String entityToEffect = actionElement.getAttribute("entity");
-        Optional<IEntity> entity = entities.stream().filter(innerEntity -> innerEntity.getName().equals(entityToEffect)).findFirst();
+        Optional<EntityDefinition> entity = entities.stream().filter(innerEntity -> innerEntity.name.equals(entityToEffect)).findFirst();
         return entity.isPresent();
     }
 
-    public static ConditionAction parse(Element actionElement, List<IEntity> entities) throws ParseException {
+    public static ConditionAction parse(Element actionElement, List<EntityDefinition> entities) throws ParseException {
         if (ConditionAction.isValidConditionAction(actionElement, entities)) {
             String entityToEffect = actionElement.getAttribute("entity");
             Element conditionElement = (Element) actionElement.getElementsByTagName("PRD-condition").item(0);

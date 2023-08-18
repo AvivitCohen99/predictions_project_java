@@ -1,6 +1,7 @@
 package world;
 
-import world.entity.EntityDetails;
+import world.entity.Entity;
+import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.environment.IEnvironment;
 import world.rule.IRule;
@@ -8,11 +9,13 @@ import world.rule.RuleDetails;
 import world.termination.Termination;
 import world.termination.TerminationDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class World {
     IEnvironment env;
+    List<EntityDefinition> entityDefinitions;
     List<IEntity> entities;
     List<IRule> rules;
     Termination termination;
@@ -21,18 +24,28 @@ public class World {
         return env;
     }
 
-    public World(IEnvironment env, List<IEntity> entities, List<IRule> rules, Termination termination){
+    public World(IEnvironment env, List<EntityDefinition> entityDefinitions, List<IRule> rules, Termination termination){
         this.env = env;
         this.rules = rules;
-        this.entities = entities;
+        this.entities = GenerateEntities(entityDefinitions);
+        this.entityDefinitions = entityDefinitions;
         this.termination = termination;
     }
 
-    public WorldDetails getDetails() {
-        List<EntityDetails> entityDetailsList = entities.stream().map(entity -> entity.getDetails()).collect(Collectors.toList());
+    private List<IEntity> GenerateEntities(List<EntityDefinition> entityDefinitions) {
+        List<IEntity> entities = new ArrayList();
+        for (EntityDefinition entityDefinition : entityDefinitions) {
+            for (int currentEntityIndex = 0; currentEntityIndex < entityDefinition.populationCount; currentEntityIndex++) {
+                entities.add(new Entity(entityDefinition));
+            }
+        }
+        return entities;
+    }
+
+    public WorldDefinition getDetails() {
         List<RuleDetails> ruleDetailsList = rules.stream().map(rule -> rule.getDetails()).collect(Collectors.toList());
         TerminationDetails terminationDetails = termination.getDetails();
-        return new WorldDetails(entityDetailsList, ruleDetailsList, terminationDetails);
+        return new WorldDefinition(entityDefinitions, ruleDetailsList, terminationDetails);
     }
 
     public List<IEntity> getEntities() {

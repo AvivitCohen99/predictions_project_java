@@ -1,18 +1,18 @@
 package world;
 
-import world.entity.EntityDetails;
+import world.entity.EntityDefinition;
 import world.rule.RuleDetails;
 import world.termination.TerminationDetails;
 
 import java.util.List;
 
-public class WorldDetails {
-    public List<EntityDetails> entityDetails;
+public class WorldDefinition {
+    public List<EntityDefinition> entityDefinitions;
     public List<RuleDetails> rulesDetails;
     public TerminationDetails terminationDetails;
 
-    public WorldDetails(List<EntityDetails> entityDetails, List<RuleDetails> rulesDetails, TerminationDetails terminationDetails) {
-        this.entityDetails = entityDetails;
+    public WorldDefinition(List<EntityDefinition> entityDetails, List<RuleDetails> rulesDetails, TerminationDetails terminationDetails) {
+        this.entityDefinitions = entityDetails;
         this.rulesDetails = rulesDetails;
         this.terminationDetails = terminationDetails;
     }

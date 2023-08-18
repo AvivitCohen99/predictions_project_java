@@ -3,7 +3,7 @@ package world.property;
 import org.w3c.dom.Element;
 
 public class PropertyParser {
-    public static Property parse(Element propertyElement) {
+    public static PropertyDefinition parse(Element propertyElement) {
         String type = propertyElement.getAttribute("type");
         String name = propertyElement.getElementsByTagName("PRD-name").item(0).getTextContent();
 
