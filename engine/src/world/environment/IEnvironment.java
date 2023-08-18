@@ -2,7 +2,10 @@ package world.environment;
 
 import world.property.Property;
 
+import java.util.List;
+
 public interface IEnvironment {
-    public Property getEnvironmentVariable(String name);
-    public void addEnvironmentVariable(Property property);
+    Property getEnvironmentVariable(String name);
+    void addEnvironmentVariable(Property property);
+    List<Property> getAllProperties();
 }

@@ -17,6 +17,10 @@ public class World {
     List<IRule> rules;
     Termination termination;
 
+    public IEnvironment getEnv() {
+        return env;
+    }
+
     public World(IEnvironment env, List<IEntity> entities, List<IRule> rules, Termination termination){
         this.env = env;
         this.rules = rules;

@@ -2,7 +2,9 @@ import simulation.Simulation;
 import world.ParseException;
 import world.WorldDetails;
 import world.entity.EntityDetails;
+import world.property.Property;
 import world.property.PropertyDetails;
+import world.property.PropertyType;
 import world.rule.RuleDetails;
 import world.rule.activation.ActivationDetails;
 import world.termination.TerminationDetails;
@@ -25,6 +27,55 @@ public class SimulationRunner {
     public void run(){
         getFileFromUser();
         printSimulationDetails();
+        startSimulation();
+    }
+
+    private Object getValueFromUser(PropertyType type) {
+        Object value = scanner.nextLine();
+        return type.convert(value);
+    }
+
+    private void startSimulation() {
+        List <Property> environmentProps = simulation.getWorld().getEnv().getAllProperties();
+        for(Property property: environmentProps) {
+            PropertyDetails details = property.getDetails();
+            System.out.println("env property: " + details.name);
+            String enteredValue = "";
+            if(details.from.isPresent() && details.to.isPresent()) {
+                Number value = null;
+                while (value == null) {
+                    System.out.println("enter " + details.type + " value between " + details.from.get() + " - " + details.to.get());
+                    try {
+                        enteredValue = scanner.nextLine();
+                        value = property.getType().convert(enteredValue);
+                        if (value.doubleValue() > details.to.get().doubleValue() || value.doubleValue() < details.from.get().doubleValue()) {
+                            System.out.println("number not in range");
+                            value = null;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("unable to convert value " + enteredValue + " to type " + details.type);
+                        value = null;
+                    }
+                }
+                property.setValue(value);
+            }
+            else {
+                Object value = null;
+                while (value == null){
+                    try {
+                        System.out.println("enter " + details.type + " value");
+                        enteredValue = scanner.nextLine();
+                        value = property.getType().convert(enteredValue);
+                    } catch (Exception e){
+                        System.out.println("unable to convert value " + value + " to type " + details.type);
+                        value = null;
+                    }
+                }
+                property.setValue(value);
+                value = null;
+            }
+        }
+
     }
 
     private void getFileFromUser() {

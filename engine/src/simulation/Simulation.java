@@ -13,11 +13,19 @@ import java.io.IOException;
 public class Simulation {
     World world;
 
+    public World getWorld() {
+        return world;
+    }
+
     public void readWorldFromFile(File xmlFile) throws ParserConfigurationException, IOException, SAXException, ParseException {
         this.world = WorldParser.parse(xmlFile);
     }
 
     public WorldDetails getWorldDetails() {
         return world.getDetails();
+    }
+
+    public void run() {
+
     }
 }
