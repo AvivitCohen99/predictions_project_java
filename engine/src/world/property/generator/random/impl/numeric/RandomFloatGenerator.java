@@ -8,6 +8,8 @@ public class RandomFloatGenerator extends AbstractNumericRandomGenerator<Double>
 
     @Override
     public Double generateValue() {
+        Double from = range.getFrom();
+        Double to = range.getTo();
         if(from == -1 || to == -1){
             return random.nextDouble();
         }

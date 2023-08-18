@@ -1,11 +1,15 @@
 package world;
 
+import world.entity.EntityDetails;
 import world.entity.IEntity;
 import world.environment.IEnvironment;
 import world.rule.IRule;
+import world.rule.RuleDetails;
 import world.termination.Termination;
+import world.termination.TerminationDetails;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class World {
     IEnvironment env;
@@ -20,5 +24,10 @@ public class World {
         this.termination = termination;
     }
 
-    //getWorldDetails();
+    public WorldDetails getDetails() {
+        List<EntityDetails> entityDetailsList = entities.stream().map(entity -> entity.getDetails()).collect(Collectors.toList());
+        List<RuleDetails> ruleDetailsList = rules.stream().map(rule -> rule.getDetails()).collect(Collectors.toList());
+        TerminationDetails terminationDetails = termination.getDetails();
+        return new WorldDetails(entityDetailsList, ruleDetailsList, terminationDetails);
+    }
 }

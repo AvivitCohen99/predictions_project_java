@@ -1,6 +1,9 @@
 package world.property.generator.fixed;
 
 import world.property.generator.api.ValueGenerator;
+import world.property.generator.random.impl.numeric.NumericRange;
+
+import java.util.Optional;
 
 public class FixedValueGenerator<T> implements ValueGenerator<T> {
 
@@ -13,5 +16,10 @@ public class FixedValueGenerator<T> implements ValueGenerator<T> {
     @Override
     public T generateValue() {
         return fixedValue;
+    }
+
+    @Override
+    public Optional<NumericRange> getRange() {
+        return Optional.empty();
     }
 }

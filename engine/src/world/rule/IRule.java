@@ -1,13 +1,14 @@
 package world.rule;
 
 import world.rule.action.Action;
-import world.rule.activation.Activation;
+import world.rule.activation.IActivation;
 
 import java.util.List;
 
 public interface IRule {
     String getName();
-    Activation getActivation();
+    IActivation getActivation();
     List<Action> getActionsToPerform(int ticks);
     void addAction(Action action);
+    RuleDetails getDetails();
 }

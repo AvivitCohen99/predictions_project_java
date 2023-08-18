@@ -2,6 +2,7 @@ package simulation;
 
 import org.xml.sax.SAXException;
 import world.World;
+import world.WorldDetails;
 import world.WorldParser;
 import world.ParseException;
 
@@ -14,5 +15,9 @@ public class Simulation {
 
     public void readWorldFromFile(File xmlFile) throws ParserConfigurationException, IOException, SAXException, ParseException {
         this.world = WorldParser.parse(xmlFile);
+    }
+
+    public WorldDetails getWorldDetails() {
+        return world.getDetails();
     }
 }

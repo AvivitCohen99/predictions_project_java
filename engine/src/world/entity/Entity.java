@@ -10,6 +10,7 @@ import world.property.PropertyParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Entity implements IEntity {
     final String name;
@@ -26,7 +27,6 @@ public class Entity implements IEntity {
             Node entitiesPropertyNode = entitiesPropertiesList.item(j);
             if (entitiesPropertyNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element entityPropertyElement = (Element) entitiesPropertyNode;
-                //TODO: check if search is OK.
                 Property property = PropertyParser.parse(entityPropertyElement);
                 boolean exist = entityDefinition.properties.stream().anyMatch(propertyToFind -> property.getName().equals(propertyToFind.getName()));
                 if (!exist) {
@@ -68,8 +68,7 @@ public class Entity implements IEntity {
 
     @Override
     public EntityDetails getDetails() {
-//        List<PropertyDetails> propertyDetails = properties.stream().map(property -> property.getDetails());
-//        return new EntityDetails(name, population, propertyDetails);
-        return null; //TODO: fix!
+        List<PropertyDetails> propertyDetails = properties.stream().map(Property::getDetails).collect(Collectors.toList());
+        return new EntityDetails(name, population, propertyDetails);
     }
 }

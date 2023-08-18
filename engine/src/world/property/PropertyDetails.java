@@ -5,11 +5,11 @@ import java.util.Optional;
 public class PropertyDetails {
     public String name;
     public PropertyType type;
-    Optional<Integer> from;
-    Optional<Integer> to;
-    boolean isRandom;
+    public Optional<Number> from;
+    public Optional<Number> to;
+    public boolean isRandom;
 
-    public PropertyDetails(String name, PropertyType type, Optional<Integer> from, Optional<Integer> to, boolean isRandom) {
+    public PropertyDetails(String name, PropertyType type, Optional<Number> from, Optional<Number> to, boolean isRandom) {
         this.name = name;
         this.type = type;
         this.from = from;

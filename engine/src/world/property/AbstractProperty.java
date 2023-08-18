@@ -1,14 +1,18 @@
 package world.property;
 
 import world.property.generator.api.ValueGenerator;
+import world.property.generator.random.api.AbstractRandomValueGenerator;
+import world.property.generator.random.impl.numeric.NumericRange;
 
-public abstract class AbstractProperty<T> implements Property<T>{
+import java.util.Optional;
+
+public abstract class AbstractProperty<T> implements Property<T> {
     String name;
     PropertyType type;
     ValueGenerator<T> valueGenerator;
     T value;
 
-    public AbstractProperty(String name, PropertyType type, ValueGenerator valueGenerator){
+    public AbstractProperty(String name, PropertyType type, ValueGenerator valueGenerator) {
         this.name = name;
         this.type = type;
         this.valueGenerator = valueGenerator;
@@ -41,6 +45,11 @@ public abstract class AbstractProperty<T> implements Property<T>{
 
     @Override
     public PropertyDetails getDetails() {
-        return new PropertyDetails(name, type, null, null, true); // TODO: fix is random
+        Optional<NumericRange> optionalRange = valueGenerator.getRange();
+        if (optionalRange.isPresent()) {
+            NumericRange range = optionalRange.get();
+            return new PropertyDetails(name, type, Optional.ofNullable(range.getFrom()), Optional.ofNullable(range.getTo()), (this.valueGenerator instanceof AbstractRandomValueGenerator));
+        }
+        return new PropertyDetails(name, type, null, null, (this.valueGenerator instanceof AbstractRandomValueGenerator));
     }
 }

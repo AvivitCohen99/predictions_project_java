@@ -1,51 +1,70 @@
 package world.rule;
 
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import world.ParseException;
 import world.entity.IEntity;
 import world.rule.action.Action;
 import world.rule.action.ActionParser;
 import world.rule.activation.Activation;
-import world.rule.activation.ActivationByProbability;
-import world.rule.activation.ActivationByTicks;
+import world.rule.activation.IActivation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Rule implements IRule {
 
     private final String name;
-    private Activation activation;
+    private IActivation activation;
     private final List<Action> actions;
 
     public static IRule parse(Element ruleElement, List<IEntity> entities) throws ParseException {
         String ruleName = ruleElement.getAttribute("name");
-        Activation activation;
+        IActivation activation;
         Element activationElement = (Element) ruleElement.getElementsByTagName("PRD-activation").item(0);
         if(activationElement != null) {
             String ticksAttribute = activationElement.getAttribute("ticks");
             Integer activationTicks = !ticksAttribute.isEmpty() ? Integer.parseInt(activationElement.getAttribute("ticks")) : -1;
-            if (activationTicks > 0) {
-                activation = new ActivationByTicks(activationTicks);
-            } else {
-                Float activationProbability = Float.parseFloat(activationElement.getAttribute("probability"));
-                activation = new ActivationByProbability(activationProbability);
+            String probabilityAttribute = activationElement.getAttribute("probability");
+            Double activationProbability = !probabilityAttribute.isEmpty() ? Double.parseDouble(activationElement.getAttribute("probability")) : -1;
+            if (activationTicks > 0 && activationProbability > 0) {
+                activation = new Activation(activationProbability, activationTicks);
+            } else if(activationTicks > 0){
+                activation = new Activation(activationTicks);
+            }
+            else if(activationProbability > 0){
+                activation = new Activation(activationProbability);
+            }
+            else {
+                activation = new Activation();
             }
         }
         else {
-            activation = new ActivationByTicks(1);
+            activation = new Activation();
         }
+
         IRule rule = new Rule(ruleName, activation);
-        NodeList actionsList = ruleElement.getElementsByTagName("PRD-action");
-        for (int j = 0; j < actionsList.getLength(); j++) {
-            Element actionElement = (Element) actionsList.item(j);
+        NodeList childNodes = ((Element)ruleElement.getElementsByTagName("PRD-actions").item(0)).getChildNodes();
+         List<Element> actionsList = new ArrayList();
+        for(int i = 0; i < childNodes.getLength(); i++){
+            if (childNodes.item(i) instanceof Element) {
+                Element childElement = (Element) childNodes.item(i);
+                if (childElement.getTagName().equals("PRD-action")) {
+                    actionsList.add(childElement);
+                }
+            }
+        }
+
+        for(Element actionElement: actionsList){
             rule.addAction(ActionParser.parse(actionElement, entities));
         }
+
         return rule;
     }
 
-    public Rule(String name, Activation activation) {
+    public Rule(String name, IActivation activation) {
         this.name = name;
         this.activation = activation;
         actions = new ArrayList<>();
@@ -57,7 +76,7 @@ public class Rule implements IRule {
     }
 
     @Override
-    public Activation getActivation() {
+    public IActivation getActivation() {
         return activation;
     }
 
@@ -69,6 +88,11 @@ public class Rule implements IRule {
     @Override
     public void addAction(Action action) {
         actions.add(action);
+    }
+
+    @Override
+    public RuleDetails getDetails() {
+        return new RuleDetails(this.name, this.activation.getDetails(), this.actions.size());
     }
 }
 

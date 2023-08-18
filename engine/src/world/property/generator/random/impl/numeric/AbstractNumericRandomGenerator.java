@@ -2,15 +2,19 @@ package world.property.generator.random.impl.numeric;
 
 import world.property.generator.random.api.AbstractRandomValueGenerator;
 
-public abstract class AbstractNumericRandomGenerator<T> extends AbstractRandomValueGenerator<T> {
+import java.util.Optional;
 
-    protected final T from;
-    protected final T to;
+public abstract class AbstractNumericRandomGenerator<T extends Number> extends AbstractRandomValueGenerator<T> {
+
+    protected final NumericRange<T> range;
 
     protected AbstractNumericRandomGenerator(T from, T to) {
         super();
-        this.from = from;
-        this.to = to;
+        this.range = new NumericRange<>(from, to);
     }
 
+    @Override
+    public Optional<NumericRange> getRange() {
+        return Optional.ofNullable(range);
+    }
 }
