@@ -1,8 +1,8 @@
 import simulation.Simulation;
+import simulation.SimulationResult;
 import world.ParseException;
 import world.WorldDefinition;
 import world.entity.EntityDefinition;
-import world.entity.EntityDetails;
 import world.property.PropertyDefinition;
 import world.property.PropertyDetails;
 import world.property.PropertyType;
@@ -14,10 +14,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class SimulationRunner {
-
     Simulation simulation;
     Scanner scanner;
 
@@ -26,10 +24,11 @@ public class SimulationRunner {
         this.scanner = new Scanner(System.in);
     }
 
-    public void run() throws Exception {
-        getFileFromUser();
-        printSimulationDetails();
-        startSimulation();
+    public SimulationResult run(int id) throws Exception {
+//TODO: remove
+//        getFileFromUser();
+//        printSimulationDetails();
+        return startSimulation(id);
     }
 
     private Object getValueFromUser(PropertyType type) {
@@ -88,7 +87,8 @@ public class SimulationRunner {
         }
     }
 
-    private void printEnvVariables() {
+    private void printEnvVariables() throws Exception {
+        simulation.MaybeInitFromLastRun();
         List <PropertyDefinition> environmentProps = simulation.getWorld().getEnv().getAllProperties();
         for(PropertyDefinition property: environmentProps) {
             System.out.println(property.getName() + ": " + property.getValue());
@@ -97,16 +97,18 @@ public class SimulationRunner {
 
 
 
-    private void startSimulation() throws Exception {
-        String simulationId = UUID.randomUUID().toString();
+//    TODO: return results
+    private SimulationResult startSimulation(int id) throws Exception {
+        simulation.MaybeInitFromLastRun();
         getEnvVariableFromUser();
         printEnvVariables();
-        simulation.run(); //TODO: returns result
-        System.out.println("Simulation " + simulationId + " ended");
-
+        SimulationResult result = simulation.run(id);
+        System.out.println("Simulation " + id + " ended");
+        return result;
     }
 
-    private void getFileFromUser() {
+    public void getFileFromUser() {
+//        TODO: remove while(true) and handle exceptions in UI.
         while (true) {
             // REMEMBER: our file path is "engine//resources//ex1-cigarets.xml"
             try {
@@ -129,7 +131,8 @@ public class SimulationRunner {
     }
 
     private String getFilePath() throws ParseException {
-//        System.out.println("Please enter file path: ");
+//TODO: remove comments
+        //        System.out.println("Please enter file path: ");
 //        String filePath = scanner.nextLine();
 //        if (!filePath.endsWith(".xml")) {
 //            throw new ParseException("file format must be XML");
@@ -138,7 +141,7 @@ public class SimulationRunner {
         return "engine//resources//ex1-cigarets.xml"; //TODO: remove
     }
 
-    private void printSimulationDetails() {
+    public void printSimulationDetails() throws Exception {
         WorldDefinition worldDefinition = simulation.getWorldDetails();
 
         List<EntityDefinition> entityDefinitions = worldDefinition.entityDefinitions;

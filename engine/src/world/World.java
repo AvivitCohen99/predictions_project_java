@@ -28,6 +28,9 @@ public class World {
     public WorldStatistics getWorldStatistics() {
         return worldStatistics;
     }
+    public List<EntityDefinition> getEntityDefinitions() {
+        return entityDefinitions;
+    }
 
     public World(IEnvironment env, List<EntityDefinition> entityDefinitions, List<IRule> rules, Termination termination){
         this.env = env;

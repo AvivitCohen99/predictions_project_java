@@ -2,17 +2,23 @@ package simulation;
 
 import org.xml.sax.SAXException;
 import world.*;
+import world.entity.EntityDefinition;
 import world.rule.IRule;
 import world.termination.TerminationDetails;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 public class Simulation {
     World world;
+    Optional<File> lastXmlRun;
+
+    public Simulation() {
+        this.world = null;
+        lastXmlRun = Optional.empty();
+    }
 
     public World getWorld() {
         return world;
@@ -20,14 +26,17 @@ public class Simulation {
 
     public void readWorldFromFile(File xmlFile) throws ParserConfigurationException, IOException, SAXException, ParseException {
         this.world = WorldParser.parse(xmlFile);
+        lastXmlRun = Optional.ofNullable(xmlFile);
     }
 
-    public WorldDefinition getWorldDetails() {
+    public WorldDefinition getWorldDetails() throws Exception {
+        MaybeInitFromLastRun();
         return world.getDetails();
     }
 
 
-    public void run() throws Exception {
+    public SimulationResult run(int simulationId) throws Exception {
+        MaybeInitFromLastRun();
         int tick = 1;
 
         WorldStatistics statistics = world.getWorldStatistics();
@@ -47,8 +56,34 @@ public class Simulation {
             tick++;
         }
 
-//        PrintStatistics(statistics);
+//        PrintStatistics(statistics);  // For debug only!
         System.out.println("Simulation done. Reason: " + terminationReason[0]);
+        SimulationResult result = GatherResults(simulationId, start, world);
+
+        world = null;
+
+        return result;
+    }
+
+    public void MaybeInitFromLastRun() throws Exception {
+        if (world == null) {
+            if (lastXmlRun.isPresent()) {
+                this.world = WorldParser.parse(lastXmlRun.get());
+            }
+            else {
+                throw new Exception("Need to read file first!");
+            }
+        }
+    }
+
+    private SimulationResult GatherResults(int simulationId, Date start, World world) {
+        List<SimulationEntityResult> entityResultList = new ArrayList();
+        for (EntityDefinition entityDefinition : world.getEntityDefinitions()) {
+            int finalCount = (int) world.getEntities().stream().filter(entity -> entity.getName().equals(entityDefinition.name) && !entity.getIsDead()).count();
+            entityResultList.add(new SimulationEntityResult(entityDefinition.name, entityDefinition.populationCount, finalCount));
+        }
+        SimulationResult result = new SimulationResult(start, simulationId, entityResultList);
+        return result;
     }
 
     private boolean ShouldTerminate(int tick, Date start, TerminationDetails terminationDetails, String[] terminationReason) {
