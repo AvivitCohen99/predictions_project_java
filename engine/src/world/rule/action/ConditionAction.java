@@ -48,11 +48,12 @@ public class ConditionAction extends AbstractAction {
 
     @Override
     public void invokeAction(World world) throws Exception {
-        if(this.condition.isFulfilled()){
-            this.thenAction.invokeAction(world);
-        }
-        else if(this.elseAction != null){
-            this.elseAction.invokeAction(world);
+        for (IEntity entityToEffect : getEntitiesToEffect(world)) {
+            if (this.condition.isFulfilled(world, entityToEffect)) {
+                this.thenAction.invokeAction(world);
+            } else if (this.elseAction != null) {
+                this.elseAction.invokeAction(world);
+            }
         }
     }
 }

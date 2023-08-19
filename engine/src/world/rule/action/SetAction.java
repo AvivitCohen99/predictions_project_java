@@ -35,9 +35,11 @@ public class SetAction extends AbstractAction {
 
     @Override
     public void invokeAction(World world) throws Exception {
-        IEntity entityToEffect = this.getEntityToEffect(world);
-        PropertyDefinition prop = this.getPropertyToEffect(entityToEffect, this.propertyName);
-        Object currentValue = prop.getType().convert(expression.getValue(world));
-        prop.setValue(currentValue);
+        List<IEntity> entitiesToEffect = this.getEntitiesToEffect(world);
+        for (IEntity entityToEffect : entitiesToEffect) {
+            PropertyDefinition prop = this.getPropertyToEffect(entityToEffect, this.propertyName);
+            Object currentValue = prop.getType().convert(expression.getValue(world));
+            prop.setValue(currentValue);
+        }
     }
 }

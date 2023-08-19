@@ -32,7 +32,7 @@ public class Simulation {
         int tick = 1;
         while (tick <= terminationTicks) {
             for (IRule rule: world.getRules()){
-                if(rule.getActivation().isActive(tick)){
+                if(rule.getActivation().isActive(tick)) {
                     rule.invokeRule(world);
                 }
             }

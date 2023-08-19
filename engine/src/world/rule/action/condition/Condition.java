@@ -1,6 +1,7 @@
 package world.rule.action.condition;
 
 import org.w3c.dom.Element;
+import world.World;
 import world.entity.EntityDefinition;
 import world.entity.IEntity;
 
@@ -21,5 +22,5 @@ public abstract class Condition {
         return false;
     }
 
-    public abstract boolean isFulfilled();
+    public abstract boolean isFulfilled(World world, IEntity entity) throws Exception;
 }

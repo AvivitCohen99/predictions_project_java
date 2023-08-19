@@ -6,6 +6,7 @@ import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.property.PropertyDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,13 +33,15 @@ public abstract class AbstractAction implements Action{
         return false;
     }
 
-    protected IEntity getEntityToEffect(World world) throws Exception {
-        Optional<IEntity> entityToEffect = world.getEntities().stream().filter(entity -> entity.getName().equals(this.getEntityToEffect())).findFirst();
-        if(entityToEffect.isPresent()){
-            return entityToEffect.get();
+    protected List<IEntity> getEntitiesToEffect(World world) throws Exception {
+        List<IEntity> entityToEffect = new ArrayList();
+        for (IEntity entity : world.getEntities()) {
+            if (!entity.getName().equals(entityName)) {
+                continue;
+            }
+            entityToEffect.add(entity);
         }
-
-        throw new Exception("");
+        return entityToEffect;
     }
 
     protected PropertyDefinition getPropertyToEffect(IEntity entity, String propertyName) throws Exception {
