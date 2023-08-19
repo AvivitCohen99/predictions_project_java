@@ -2,5 +2,17 @@ Name: Avivit Cohen
 ID: 316044213
 E-Mail: avivitco2@mta.ac.il
 
+
 Classes Description:
 
+1) World - contains all data about the world.
+2) UI - responsible for all interactions with the user.
+3) SimulatorRunner - run the simulation.
+4) EntityDefinition - contains the data about the definition of the entity.
+5) Entity - contains the data about entity instances.
+6) AbstractProperty - has the most basic data of properties and has other classes that extends it.
+7) Rule - responsible for all rules and contains activation that activates the rules accordingly.
+8) Termination - responsible for termination of the simulation.
+9) WorldParser - parse a world out of an xml file.
+
+Please ignore class WorldStatistics it only uses for debug.
