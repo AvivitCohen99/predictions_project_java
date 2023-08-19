@@ -99,7 +99,6 @@ public class SimulationRunner {
     }
 
     public void getFileFromUser() throws Exception {
-        // REMEMBER: our file path is "engine//resources//ex1-cigarets.xml"
         try {
             String filePath = getFilePath();
             File xmlFile = new File(filePath);
@@ -114,15 +113,12 @@ public class SimulationRunner {
     }
 
     private String getFilePath() throws ParseException {
-//TODO: remove comments
-        //        System.out.println("Please enter file path: ");
-//        String filePath = scanner.nextLine();
-//        if (!filePath.endsWith(".xml")) {
-//            throw new ParseException("file format must be XML");
-//        }
-//        return filePath;
-//        TODO: make sure that a path from outside the project works!
-        return "engine//resources//ex1-cigarets.xml";
+        System.out.println("Please enter file path: ");
+        String filePath = scanner.nextLine();
+        if (!filePath.endsWith(".xml")) {
+            throw new ParseException("file format must be XML");
+        }
+        return filePath;
     }
 
     public void printSimulationDetails() throws Exception {
