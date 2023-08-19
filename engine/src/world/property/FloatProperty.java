@@ -35,4 +35,9 @@ public class FloatProperty extends AbstractProperty<Double> {
     }
 
     public FloatProperty(String name, ValueGenerator generator) { super(name, PropertyType.FLOAT, generator); }
+
+    @Override
+    public PropertyDefinition<Double> getCopy() {
+        return new FloatProperty(name, valueGenerator);
+    }
 }

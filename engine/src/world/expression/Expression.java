@@ -15,6 +15,7 @@ public class Expression {
     Random random;
     String entity;
 
+//    TODO: should support different expression types.
     public Expression(String expression, String entity) {
         int openParenIndex = expression.indexOf('(');
         int closeParenIndex = expression.indexOf(')');

@@ -16,10 +16,28 @@ import java.util.stream.Collectors;
 public class Entity implements IEntity {
     final String name;
     final List<PropertyDefinition> properties;
+    boolean isDead;
 
     public Entity(EntityDefinition entityDefinition) {
         name = entityDefinition.name;
-        properties = entityDefinition.properties;
+        isDead = false;
+
+        properties = new ArrayList();
+        for (PropertyDefinition propertyDefinition : entityDefinition.properties) {
+            PropertyDefinition newProperty = propertyDefinition.getCopy();
+            newProperty.setValue(newProperty.generateValue());
+            properties.add(newProperty);
+        }
+    }
+
+    @Override
+    public boolean getIsDead() {
+        return isDead;
+    }
+
+    @Override
+    public void kill() {
+        isDead = true;
     }
 
     public static EntityDefinition entityParser(Element entityElement) throws ParseException {

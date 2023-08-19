@@ -20,8 +20,13 @@ public class World {
     List<IRule> rules;
     Termination termination;
 
+    WorldStatistics worldStatistics;
+
     public IEnvironment getEnv() {
         return env;
+    }
+    public WorldStatistics getWorldStatistics() {
+        return worldStatistics;
     }
 
     public World(IEnvironment env, List<EntityDefinition> entityDefinitions, List<IRule> rules, Termination termination){
@@ -30,6 +35,8 @@ public class World {
         this.entities = GenerateEntities(entityDefinitions);
         this.entityDefinitions = entityDefinitions;
         this.termination = termination;
+
+        worldStatistics = new WorldStatistics();
     }
 
     private List<IEntity> GenerateEntities(List<EntityDefinition> entityDefinitions) {

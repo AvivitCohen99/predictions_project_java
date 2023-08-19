@@ -66,12 +66,10 @@ public class CalculateAction extends AbstractAction {
     }
 
     @Override
-    public void invokeAction(World world) throws Exception {
-        for (IEntity entityToEffect : this.getEntitiesToEffect(world)) {
-            PropertyDefinition resultProp = this.getPropertyToEffect(entityToEffect, this.resultProperty);
-            Object calculationResult = calculationAction.calculate(world, entityToEffect);
-            resultProp.setValue(calculationResult);
-        }
+    public void invokeAction(World world, IEntity entity) throws Exception {
+        PropertyDefinition resultProp = this.getPropertyToEffect(entity, this.resultProperty);
+        Object calculationResult = calculationAction.calculate(world, entity);
+        resultProp.setValue(calculationResult);
     }
 
     private static class CalculationAction {

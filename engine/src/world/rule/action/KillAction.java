@@ -11,14 +11,8 @@ public class KillAction extends AbstractAction {
     }
 
     @Override
-    public void invokeAction(World world) throws Exception {
-        if (world.getEntities().isEmpty()) {
-//            TODO: say we have no one to kill.
-            return;
-        }
-        List<IEntity> entitiesToEffect = this.getEntitiesToEffect(world);
-        for (IEntity entityToEffect : entitiesToEffect) {
-            world.getEntities().remove(entityToEffect);
-        }
+    public void invokeAction(World world, IEntity entity) throws Exception {
+        entity.kill();
+        world.getWorldStatistics().GetCurrent().killActionCalled++;
     }
 }

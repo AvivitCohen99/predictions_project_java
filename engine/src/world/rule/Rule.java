@@ -97,8 +97,13 @@ public class Rule implements IRule {
 
     @Override
     public void invokeRule(World world) throws Exception {
-        for(Action action: actions){
-            action.invokeAction(world);
+        for (IEntity entity : world.getEntities()) {
+            if (entity.getIsDead()) {
+                continue;
+            }
+            for (Action action : actions) {
+                action.invokeAction(world, entity);
+            }
         }
     }
 }

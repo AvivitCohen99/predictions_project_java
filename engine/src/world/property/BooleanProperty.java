@@ -23,4 +23,9 @@ public class BooleanProperty extends AbstractProperty<Boolean> {
     public BooleanProperty(String name, ValueGenerator generator) {
         super(name, PropertyType.BOOLEAN, generator);
     }
+
+    @Override
+    public PropertyDefinition<Boolean> getCopy() {
+        return new BooleanProperty(name, valueGenerator);
+    }
 }

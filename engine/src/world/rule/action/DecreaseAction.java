@@ -35,12 +35,10 @@ public class DecreaseAction extends AbstractAction {
     }
 
     @Override
-    public void invokeAction(World world) throws Exception {
-        for (IEntity entityToEffect : this.getEntitiesToEffect(world)) {
-            PropertyDefinition prop = this.getPropertyToEffect(entityToEffect, this.property);
-            Integer currentValue = PropertyType.DECIMAL.convert(prop.getValue());
-            Integer increaseBy = PropertyType.DECIMAL.convert(byExpression.getValue(world));
-            prop.setValue(currentValue - increaseBy);
-        }
+    public void invokeAction(World world, IEntity entity) throws Exception {
+        PropertyDefinition prop = this.getPropertyToEffect(entity, this.property);
+        Integer currentValue = PropertyType.DECIMAL.convert(prop.getValue());
+        Integer increaseBy = PropertyType.DECIMAL.convert(byExpression.getValue(world));
+        prop.setValue(currentValue - increaseBy);
     }
 }

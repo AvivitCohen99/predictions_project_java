@@ -12,4 +12,6 @@ public interface IEntity {
 
     void addEntityProperty(PropertyDefinition propertyDefinition);
     EntityDetails getDetails();
+    boolean getIsDead();
+    void kill();
 }

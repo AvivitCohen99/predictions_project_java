@@ -36,4 +36,10 @@ public class IntegerProperty extends AbstractProperty<Integer> {
     public IntegerProperty(String name, ValueGenerator generator){
         super(name, PropertyType.DECIMAL, generator);
     }
+
+
+    @Override
+    public PropertyDefinition<Integer> getCopy() {
+        return new IntegerProperty(name, valueGenerator);
+    }
 }

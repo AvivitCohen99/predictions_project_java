@@ -7,4 +7,6 @@ public interface PropertyDefinition<T> {
     void setValue(T value);
     T getValue();
     PropertyDetails getDetails();
+
+    PropertyDefinition<T> getCopy();
 }

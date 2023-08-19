@@ -26,4 +26,9 @@ public class StringProperty extends AbstractProperty<String>{
     public StringProperty(String name, ValueGenerator valueGenerator){
         super(name, PropertyType.STRING, valueGenerator);
     }
+
+    @Override
+    public PropertyDefinition<String> getCopy() {
+        return new StringProperty(name, valueGenerator);
+    }
 }
