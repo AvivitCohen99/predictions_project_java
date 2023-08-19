@@ -138,6 +138,7 @@ public class SimulationRunner {
 //            throw new ParseException("file format must be XML");
 //        }
 //        return filePath;
+//        TODO: make sure that a path from outside the project works!
         return "engine//resources//ex1-cigarets.xml"; //TODO: remove
     }
 

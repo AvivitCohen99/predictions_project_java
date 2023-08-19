@@ -56,11 +56,10 @@ public class SingleCondition extends Condition {
                                 return propValue.equals(comparison);
                         case "!=":
                                 return !propValue.equals(comparison);
-//                        TODO: support FLOAT as well
                         case "bt":
-                                return (int)PropertyType.DECIMAL.convert(propValue) > (int)PropertyType.DECIMAL.convert(comparison);
+                                return (Double)PropertyType.FLOAT.convert(propValue) > (Double)PropertyType.FLOAT.convert(comparison);
                         case "lt":
-                                return (int)PropertyType.DECIMAL.convert(propValue) < (int)PropertyType.DECIMAL.convert(comparison);
+                                return (Double)PropertyType.FLOAT.convert(propValue) < (Double)PropertyType.FLOAT.convert(comparison);
                 }
                 throw new Exception("Not supported comparison type " + operator);
         }

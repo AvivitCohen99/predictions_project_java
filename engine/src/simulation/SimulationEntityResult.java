@@ -1,14 +1,20 @@
 package simulation;
 
+import world.entity.IEntity;
+
+import java.util.List;
+
 public class SimulationEntityResult {
     String entityName;
     int startPopulation;
     int endPopulation;
+    List<IEntity> relevantEntities;
 
-    public SimulationEntityResult(String entityName, int startPopulation, int endPopulation) {
+    public SimulationEntityResult(String entityName, int startPopulation, int endPopulation, List<IEntity> relevantEntities) {
         this.entityName = entityName;
         this.startPopulation = startPopulation;
         this.endPopulation = endPopulation;
+        this.relevantEntities = relevantEntities;
     }
 
     public String getEntityName() {
@@ -33,5 +39,9 @@ public class SimulationEntityResult {
 
     public void setEndPopulation(int endPopulation) {
         this.endPopulation = endPopulation;
+    }
+
+    public List<IEntity> getRelevantEntities() {
+        return relevantEntities;
     }
 }
