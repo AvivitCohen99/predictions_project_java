@@ -38,8 +38,8 @@ public class IncreaseAction extends AbstractAction {
     @Override
     public void invokeAction(World world, IEntity entity) throws Exception {
         PropertyDefinition prop = this.getPropertyToEffect(entity, this.property);
-        Integer currentValue = PropertyType.DECIMAL.convert(prop.getValue());
-        Integer increaseBy = PropertyType.DECIMAL.convert(byExpression.getValue(world));
+        Double currentValue = PropertyType.FLOAT.convert(prop.getValue());
+        Double increaseBy = PropertyType.FLOAT.convert(byExpression.getValue(world));
         prop.setValue(currentValue + increaseBy);
         world.getWorldStatistics().GetCurrent().IncreaseActionCalled("increase__" + property);
     }
