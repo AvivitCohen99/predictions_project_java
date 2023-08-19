@@ -75,28 +75,45 @@ public class UI {
         }
     }
 
+    private static boolean isChoiceValid(String choice, int from, int to) {
+        Integer choiceInt;
+        try {
+            choiceInt = Integer.parseInt(choice);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return choiceInt >= from && choiceInt <= to;
+    }
+
+
     private static void PrintHistogram(SimulationResult simulationResult) {
-        System.out.println("Select entity by name: ");
-        for (SimulationEntityResult entityResult : simulationResult.getEntities()) {
-            System.out.println(entityResult.getEntityName());
+        System.out.println("Select entity by: ");
+        for (int i = 0; i < simulationResult.getEntities().size(); i++) {
+            System.out.println(i+1 + ". " + simulationResult.getEntities().get(i).getEntityName());
         }
         Scanner in = new Scanner(System.in);
-        String selectedEntityName = in.nextLine();
-        Optional<SimulationEntityResult> selectedEntity = simulationResult.getEntities().stream().filter(m -> m.getEntityName().toLowerCase().equals(selectedEntityName.toLowerCase())).findFirst();
-        if (!selectedEntity.isPresent()) {
+        String selectedEntityNumber = in.nextLine();
+        if (!isChoiceValid(selectedEntityNumber, 1, simulationResult.getEntities().size())) {
             System.out.println("Entity not found...");
             return;
         }
-        List<IEntity> relevantEntities = selectedEntity.get().getRelevantEntities();
+        SimulationEntityResult selectedEntity = simulationResult.getEntities().get(Integer.parseInt(selectedEntityNumber)-1);
+
+        List<IEntity> relevantEntities = selectedEntity.getRelevantEntities();
         if (relevantEntities.isEmpty()) {
             System.out.println("Simulation ended with 0 such entities...");
             return;
         }
         System.out.println("Select property: ");
-        for (PropertyDefinition propertyDefinition : relevantEntities.get(0).getProps()) {
-            System.out.println(propertyDefinition.getName());
+        for (int i = 0; i < relevantEntities.get(0).getProps().size(); i++) {
+            System.out.println(i+1 + ". " + relevantEntities.get(0).getProps().get(i).getName());
         }
-        String selectedPropertyName = in.nextLine();
+        String selectedPropertyNumber = in.nextLine();
+        if(!isChoiceValid(selectedPropertyNumber, 1, relevantEntities.get(0).getProps().size())) {
+            System.out.println("Property not found...");
+            return;
+        }
+        String selectedPropertyName = relevantEntities.get(0).getProps().get(Integer.parseInt(selectedPropertyNumber) - 1).getName();
         int propCount = (int) relevantEntities.get(0).getProps().stream().filter(prop -> prop.getName().toLowerCase().equals(selectedPropertyName.toLowerCase())).count();
         if (propCount == 0) {
             System.out.println("Property not found...");
@@ -127,7 +144,7 @@ public class UI {
 
     private static void PrintQuantity(SimulationResult simulationResult) {
         for (SimulationEntityResult entityResult : simulationResult.getEntities()) {
-            System.out.println("Entity " + entityResult.getEntityName() + ": initial - " + entityResult.getStartPopulation() + ". end - " + entityResult.getEndPopulation());
+            System.out.println("Entity " + entityResult.getEntityName() + ": initial - " + entityResult.getStartPopulation() + ". end - " + entityResult.getEndPopulation() + ".");
         }
     }
 

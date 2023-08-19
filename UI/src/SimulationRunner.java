@@ -36,9 +36,9 @@ public class SimulationRunner {
     private void getEnvVariableFromUser() {
         List <PropertyDefinition> environmentProps = simulation.getWorld().getEnv().getAllProperties();
         for(PropertyDefinition property: environmentProps) {
-            System.out.println("Do you want to enter value to " + property.getName() + " or use default value? enter 'yes' on 'no'");
+            System.out.println("If you want to enter value to " + property.getName() + " enter (1), press any other key to use a default value");
             String answer = scanner.nextLine();
-            if (answer.equals("yes")) {
+            if (answer.equals("1")) {
                 PropertyDetails details = property.getDetails();
                 System.out.println("env property: " + details.name);
                 String enteredValue = "";
@@ -75,11 +75,8 @@ public class SimulationRunner {
                     property.setValue(value);
                     value = null;
                 }
-            } else if (answer.equals("no")) {
+            } else {
                 property.setValue(property.generateValue());
-            }
-            else {
-                System.out.println("Please enter 'yes' to enter a value or 'no' to use default value");
             }
         }
     }
