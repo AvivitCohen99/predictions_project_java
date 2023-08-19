@@ -40,5 +40,6 @@ public class IncreaseAction extends AbstractAction {
         Integer currentValue = PropertyType.DECIMAL.convert(prop.getValue());
         Integer increaseBy = PropertyType.DECIMAL.convert(byExpression.getValue(world));
         prop.setValue(currentValue + increaseBy);
+        world.getWorldStatistics().GetCurrent().IncreaseActionCalled("increase__" + property);
     }
 }

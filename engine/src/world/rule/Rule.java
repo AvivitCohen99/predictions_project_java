@@ -102,6 +102,9 @@ public class Rule implements IRule {
                 continue;
             }
             for (Action action : actions) {
+                if (!action.getEntityToEffect().toLowerCase().equals(entity.getName().toLowerCase())) {
+                    continue;
+                }
                 action.invokeAction(world, entity);
             }
         }

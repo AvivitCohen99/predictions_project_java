@@ -70,6 +70,7 @@ public class CalculateAction extends AbstractAction {
         PropertyDefinition resultProp = this.getPropertyToEffect(entity, this.resultProperty);
         Object calculationResult = calculationAction.calculate(world, entity);
         resultProp.setValue(calculationResult);
+        world.getWorldStatistics().GetCurrent().IncreaseActionCalled("calculate__" + resultProperty);
     }
 
     private static class CalculationAction {
