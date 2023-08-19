@@ -14,7 +14,6 @@ public class UI {
         List<SimulationResult> allResults = new ArrayList();
         SimulationRunner runner = new SimulationRunner();
 //        TODO: while not finish
-
         while (true) {
             try {
                 int userChoice = GetChoiceFromUser();

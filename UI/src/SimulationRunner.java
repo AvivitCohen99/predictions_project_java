@@ -25,9 +25,6 @@ public class SimulationRunner {
     }
 
     public SimulationResult run(int id) throws Exception {
-//TODO: remove
-//        getFileFromUser();
-//        printSimulationDetails();
         return startSimulation(id);
     }
 
@@ -95,9 +92,6 @@ public class SimulationRunner {
         }
     }
 
-
-
-//    TODO: return results
     private SimulationResult startSimulation(int id) throws Exception {
         simulation.MaybeInitFromLastRun();
         getEnvVariableFromUser();
@@ -107,26 +101,18 @@ public class SimulationRunner {
         return result;
     }
 
-    public void getFileFromUser() {
-//        TODO: remove while(true) and handle exceptions in UI.
-        while (true) {
-            // REMEMBER: our file path is "engine//resources//ex1-cigarets.xml"
-            try {
-                String filePath = getFilePath();
-                File xmlFile = new File(filePath);
-                simulation.readWorldFromFile(xmlFile);
-                break;
-            }
-            catch (ParseException e){
-                System.out.println(e.getMessage());
-            }
-            catch (FileNotFoundException e) {
-                System.out.println("file not found");
-            }
-            catch (Exception e){
-                System.out.println("failed to read file");
-                System.out.println(e.getMessage());
-            }
+    public void getFileFromUser() throws Exception {
+        // REMEMBER: our file path is "engine//resources//ex1-cigarets.xml"
+        try {
+            String filePath = getFilePath();
+            File xmlFile = new File(filePath);
+            simulation.readWorldFromFile(xmlFile);
+        } catch (ParseException e) {
+            throw new Exception("Failed to parse file!");
+        } catch (FileNotFoundException e) {
+            throw new Exception("File not found!");
+        } catch (Exception e) {
+            throw new Exception("Failed to parse file! " + e.getMessage());
         }
     }
 
@@ -139,7 +125,7 @@ public class SimulationRunner {
 //        }
 //        return filePath;
 //        TODO: make sure that a path from outside the project works!
-        return "engine//resources//ex1-cigarets.xml"; //TODO: remove
+        return "engine//resources//ex1-cigarets.xml";
     }
 
     public void printSimulationDetails() throws Exception {
