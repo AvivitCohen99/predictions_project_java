@@ -5,6 +5,7 @@ import world.World;
 import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.property.PropertyDefinition;
+import world.property.PropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,19 @@ public abstract class AbstractAction implements Action{
     protected AbstractAction(ActionType actionType, String entityName) {
         this.actionType = actionType;
         this.entityName = entityName;
+    }
+
+    protected static boolean isValidNumericAction(Element actionElement, List<EntityDefinition> entities) {
+        String entityToEffect = actionElement.getAttribute("entity");
+        Optional<EntityDefinition> entity = entities.stream().filter(innerEntity -> innerEntity.name.equals(entityToEffect)).findFirst();
+        if (entity.isPresent()) {
+            String propertyToEffect = actionElement.getAttribute("property");
+            Optional<PropertyDefinition> propertyDefinition = entity.get().properties.stream().filter(innerProperty -> innerProperty.getName().equals(propertyToEffect)).findFirst();
+            if (propertyDefinition.isPresent() && (propertyDefinition.get().getType().equals(PropertyType.FLOAT) || propertyDefinition.get().getType().equals(PropertyType.DECIMAL))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected static boolean isValidAction(Element actionElement, List<EntityDefinition> entities) {

@@ -17,7 +17,7 @@ public class DecreaseAction extends AbstractAction {
     private final Expression byExpression;
 
     public static DecreaseAction parse(Element actionElement, List<EntityDefinition> entities) throws ParseException {
-        if (AbstractAction.isValidAction(actionElement, entities)) {
+        if (AbstractAction.isValidNumericAction(actionElement, entities)) {
             String entityToEffect = actionElement.getAttribute("entity");
             String propertyToEffect = actionElement.getAttribute("property");
             String effectByExpression = actionElement.getAttribute("by");

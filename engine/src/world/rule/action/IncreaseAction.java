@@ -10,6 +10,7 @@ import world.property.PropertyDefinition;
 import world.property.PropertyType;
 
 import java.util.List;
+import java.util.Optional;
 
 public class IncreaseAction extends AbstractAction {
 
@@ -17,7 +18,7 @@ public class IncreaseAction extends AbstractAction {
     private final Expression byExpression;
 
     public static IncreaseAction parse(Element actionElement, List<EntityDefinition> entities) throws ParseException {
-        if (AbstractAction.isValidAction(actionElement, entities)) {
+        if (AbstractAction.isValidNumericAction(actionElement, entities)) {
             String entityToEffect = actionElement.getAttribute("entity");
             String propertyToEffect = actionElement.getAttribute("property");
             String effectByExpression = actionElement.getAttribute("by");

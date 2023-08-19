@@ -7,6 +7,7 @@ import world.entity.EntityDefinition;
 import world.entity.IEntity;
 import world.expression.Expression;
 import world.property.PropertyDefinition;
+import world.property.PropertyType;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +22,8 @@ public class CalculateAction extends AbstractAction {
         Optional<EntityDefinition> entity = entities.stream().filter(innerEntity -> innerEntity.name.equals(entityToEffect)).findFirst();
         if (entity.isPresent()) {
             String propertyToEffect = actionElement.getAttribute("result-prop");
-            boolean propertyExists = entity.get().properties.stream().anyMatch(innerProperty -> innerProperty.getName().equals(propertyToEffect));
-            if (propertyExists) {
+            Optional<PropertyDefinition> propertyDefinition = entity.get().properties.stream().filter(innerProperty -> innerProperty.getName().equals(propertyToEffect)).findFirst();
+            if (propertyDefinition.isPresent() && (propertyDefinition.get().getType().equals(PropertyType.FLOAT) || propertyDefinition.get().getType().equals(PropertyType.DECIMAL))) {
                 return true;
             }
         }
