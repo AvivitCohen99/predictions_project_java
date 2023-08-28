@@ -28,7 +28,7 @@ public class WorldParser {
         Document doc = ReadXmlFile(xmlFile);
 
         // parse world
-        IEnvironment env = Environment.environmentParser((Element) doc.getElementsByTagName("PRD-environment").item(0));
+        IEnvironment env = Environment.environmentParser((Element) doc.getElementsByTagName("PRD-evironment").item(0));
         List<EntityDefinition> entities = entitiesParser((Element) doc.getElementsByTagName("PRD-entities").item(0));
         List<IRule> rules = rulesParser((Element) doc.getElementsByTagName("PRD-rules").item(0), entities);
         Termination termination = Termination.parse((Element) doc.getElementsByTagName("PRD-termination").item(0));
